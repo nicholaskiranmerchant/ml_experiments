@@ -42,4 +42,6 @@ accuracy_item = (y_hat.argmax(1) == y.argmax(1)).float().mean().item()
 experiment.metrics["test_loss"] = loss_item
 experiment.metrics["test_accuracy"] = accuracy_item
 
+torch.save(experiment.to_dict(), path)
+
 print(f"Test loss: {loss_item}, accuracy: {accuracy_item}")

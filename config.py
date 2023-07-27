@@ -15,14 +15,6 @@ import uuid
 import argparse
 import torch
 
-parser =  argparse.ArgumentParser("Configure a new experiment")
-parser.add_argument("model", type=str)
-parser.add_argument("--dataset", type=str, default="mnist")
-parser.add_argument("--data_partition_splits", type=list, default=[40000, 10000, 10000])
-parser.add_argument("--batch_size", type=int, default=32)
-parser.add_argument("--num_epochs", type=int, default=10)
-args = parser.parse_args()
-
 class MlExperiment:
     def __init__(self, experiment):
         self.uuid = experiment['uuid']
@@ -79,15 +71,23 @@ class MlExperiment:
 
         return MlExperiment(experiment)
         
+if __name__ == "__main__":
+    parser =  argparse.ArgumentParser("Configure a new experiment")
+    parser.add_argument("model", type=str)
+    parser.add_argument("--dataset", type=str, default="mnist")
+    parser.add_argument("--data_partition_splits", type=list, default=[40000, 10000, 10000])
+    parser.add_argument("--batch_size", type=int, default=32)
+    parser.add_argument("--num_epochs", type=int, default=10)
+    args = parser.parse_args()
 
-experiment = MlExperiment.from_args(
-    args.model, 
-    args.dataset, 
-    args.data_partition_splits,
-    args.batch_size, 
-    args.num_epochs)
+    experiment = MlExperiment.from_args(
+        args.model, 
+        args.dataset, 
+        args.data_partition_splits,
+        args.batch_size, 
+        args.num_epochs)
 
-path = f"experiments/{experiment.uuid}.json"
-torch.save(experiment.to_dict(), path)
+    path = f"experiments/{experiment.uuid}.json"
+    torch.save(experiment.to_dict(), path)
 
-print(f"Configured experiment: {experiment.uuid}")
+    print(f"Configured experiment: {experiment.uuid}")
